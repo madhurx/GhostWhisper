@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { cn } from '@/lib/utils';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -19,16 +20,23 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning className="h-full">
             <head />
-            <body className={poppins.className}>
+            <body
+                className={cn(
+                    'relative h-full antialiased font-sans',
+                    poppins.className,
+                )}
+            >
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <main className="relative flex flex-col min-h-screen">
+                        <div className="flex-1">{children}</div>
+                    </main>
                 </ThemeProvider>
             </body>
         </html>

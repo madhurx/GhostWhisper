@@ -8,7 +8,8 @@ import { usePathname } from 'next/navigation';
 const Navbar = () => {
     const user = false;
     const pathname = usePathname();
-    const isAnonChatPage = pathname === '/anonChat';
+    const isAnonChatPage =
+        pathname === '/anonChat' || pathname === '/anonChat/go';
     return (
         <div className="sticky z-50 top-0 inset-x-0 h-16">
             <div className="relative">

@@ -24,10 +24,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning className="h-full">
             <head />
             <body
-                className={cn(
-                    'relative h-full antialiased font-sans',
-                    poppins.className,
-                )}
+                className={cn('relative h-full antialiased', poppins.className)}
             >
                 <ThemeProvider
                     attribute="class"

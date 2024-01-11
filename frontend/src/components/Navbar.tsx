@@ -10,16 +10,16 @@ const Navbar = () => {
     const pathname = usePathname();
     const isAnonChatPage = pathname === '/anonChat';
     return (
-        !isAnonChatPage && (
-            <div className="sticky z-50 top-0 inset-x-0 h-16">
-                <div className="relative">
-                    <MaxWidthWrapper>
-                        <div className="border-b border-gray-400">
-                            <div className="flex h-16 items-center">
-                                <div className="ml-4 flex">
-                                    <Link href={'/'}>GhostWhisper</Link>
-                                </div>
+        <div className="sticky z-50 top-0 inset-x-0 h-16">
+            <div className="relative">
+                <MaxWidthWrapper>
+                    <div className="border-b border-gray-400">
+                        <div className="flex h-16 items-center">
+                            <div className="ml-4 flex">
+                                <Link href={'/'}>GhostWhisper</Link>
+                            </div>
 
+                            {!isAnonChatPage && (
                                 <div className="hidden z-50 md:block">
                                     <h1 className="ml-5">
                                         <Link
@@ -32,8 +32,10 @@ const Navbar = () => {
                                         </Link>
                                     </h1>
                                 </div>
+                            )}
 
-                                <div className="ml-auto flex items-center">
+                            <div className="ml-auto flex items-center">
+                                {!isAnonChatPage ? (
                                     <div className="hidden md:flex md:flex-1 md:items-center lg:justify-end lg:space-x-6">
                                         {user ? null : (
                                             <Link
@@ -67,13 +69,17 @@ const Navbar = () => {
 
                                         <ModeToggle />
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="hidden md:flex md:flex-1 md:items-center lg:justify-end lg:space-x-6">
+                                        <ModeToggle />
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    </MaxWidthWrapper>
-                </div>
+                    </div>
+                </MaxWidthWrapper>
             </div>
-        )
+        </div>
     );
 };
 

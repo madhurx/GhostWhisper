@@ -11,7 +11,7 @@ export default function Home() {
                         <span className="hidden md:inline">
                             <br />
                         </span>
-                        <span className="md:hidden"> </span>
+                        <span className="md:hidden">&nbsp;</span>
                         Your Anonymity
                     </h1>
                 </div>

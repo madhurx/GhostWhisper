@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+import Navbar from '@/components/Navbar';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -35,7 +36,10 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     <main className="relative flex flex-col min-h-screen">
-                        <div className="flex-1">{children}</div>
+                        <div className="flex-1">
+                            <Navbar />
+                            {children}
+                        </div>
                     </main>
                 </ThemeProvider>
             </body>

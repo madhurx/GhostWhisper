@@ -1,5 +1,5 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
@@ -8,8 +8,8 @@ import Link from 'next/link';
 const page = () => {
     return (
         <MaxWidthWrapper>
-            <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
-                <div className="flex flex-col lg:flex-row w-full h-full">
+            <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl max-h-screen">
+                <div className="flex flex-col lg:flex-row w-full h-full items-center justify-center">
                     <div className="w-3/4 md:w-1/2 items-center justify-center">
                         <div className="relative h-full drop-shadow-2xl flex flex-col">
                             <Image
@@ -24,7 +24,7 @@ const page = () => {
                             />
                         </div>
                     </div>
-                    <div className="w-3/4 md:w-1/2 items-center justify-center flex flex-col">
+                    <div className="w-3/4 md:w-1/2 items-center justify-center flex flex-col py-5">
                         <div className="w-full px-10">
                             <form>
                                 <div className=" grid w-full max-w-sm gap-2.5">

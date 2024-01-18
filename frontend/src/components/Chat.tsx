@@ -1,5 +1,7 @@
 'use client';
 import Image from 'next/image';
+import MessageBox from './MessageBox';
+import { SendHorizontalIcon } from 'lucide-react';
 
 const Chat = () => {
     const handleInviteClick = (): void => {
@@ -78,9 +80,31 @@ const Chat = () => {
                     </div>
                 </div>
                 {/* Chat Row */}
-                <div className="grid w-full h-full py-1">
-                    <div className="rounded-3xl bg-cover dark:brightness-50 contrast-125 saturate-50 dark:contrast-50  dark:saturate-50 bg bg-[url('/chat-bg-light.png')] dark:bg-[url('/chat-bg-dark.png')] bg-scroll ">
-                        Chat Message
+                <div className="grid w-full py-4 h-full overflow-hidden text-sm">
+                    <div className="grid grid-rows-10 grid-cols-1 rounded-3xl bg-cover bg-[url('/chat-bg-light.png')] dark:bg-[url('/chat-bg-dark.png')] bg-scroll px-2">
+                        <div className="row-span-9 overflow-hidden relative justify-center mb-2 px-1">
+                            <div className="overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-full absolute">
+                                <MessageBox />
+                                <MessageBox />
+                                <MessageBox />
+                            </div>
+                        </div>
+
+                        <div className="row-span-1 w-full rounded-3xl px-1">
+                            <div className="w-full flex">
+                                <textarea
+                                    className="dark:bg-neutral-800 bg-neutral-100 border appearance-none rounded-3xl py-2 px-4 dark:text-white leading-tight focus:outline-none w-full h-full text-wrap overflow-x-hidden overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                                    rows={1}
+                                    value="msg.."
+                                />
+                                <button
+                                    type="submit"
+                                    className="justify-end text-blue-700 hover:scale-110"
+                                >
+                                    <SendHorizontalIcon size={32} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

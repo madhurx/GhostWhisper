@@ -1,11 +1,16 @@
+'use client';
 import Image from 'next/image';
 
 const Chat = () => {
+    const handleInviteClick = (): void => {
+        navigator.clipboard.writeText('pathname');
+    };
+
     return (
-        <div className="px-2">
-            <div className="flex flex-col">
+        <div className="px-2 h-full">
+            <div className="flex flex-col h-full">
                 {/* Header Row */}
-                <div className="flex w-full pb-2 cursor-default">
+                <div className="flex w-full pb-1 cursor-default">
                     <div className="flex">
                         <div className="h-full items-center flex">
                             <Image
@@ -30,7 +35,10 @@ const Chat = () => {
                     <div className="flex flex-row ms-auto items-center">
                         <div className="items-center flex">
                             <div className="left-3 relative flex flex-nowrap">
-                                <h1 className="text-sm mx-1">
+                                <h1
+                                    className="text-sm mx-1 cursor-pointer"
+                                    onClick={handleInviteClick}
+                                >
                                     + Invite
                                     <span className="hidden md:inline">
                                         {' '}
@@ -41,7 +49,7 @@ const Chat = () => {
 
                             <div className="-z-20 left-4 relative border border-neutral-500 rounded-full">
                                 <Image
-                                    src={'/pfp-4.jfif'}
+                                    src={'/pfp/pfp-4.jfif'}
                                     width={30}
                                     height={30}
                                     alt="anonChatIndexImg"
@@ -52,7 +60,7 @@ const Chat = () => {
                             </div>
                             <div className="-z-10 left-2 relative border border-neutral-500 rounded-full">
                                 <Image
-                                    src={'/pfp-6.jfif'}
+                                    src={'/pfp/pfp-6.jfif'}
                                     width={30}
                                     height={30}
                                     alt="anonChatIndexImg"
@@ -70,11 +78,10 @@ const Chat = () => {
                     </div>
                 </div>
                 {/* Chat Row */}
-                <div className="flex w-full">
-                    Chat Lorem ipsum dolor sit, amete. Mollitia repellat odio
-                    reiciendis nostrum earum illo in? Repellendus autem amet sed
-                    eius. Expedita, saepe quo necessitatibus optio eaque nulla
-                    quos amet voluptatibus.
+                <div className="grid w-full h-full py-1">
+                    <div className="rounded-3xl bg-cover dark:brightness-50 contrast-125 saturate-50 dark:contrast-50  dark:saturate-50 bg bg-[url('/chat-bg-light.png')] dark:bg-[url('/chat-bg-dark.png')] bg-scroll ">
+                        Chat Message
+                    </div>
                 </div>
             </div>
         </div>

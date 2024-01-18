@@ -4,13 +4,13 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 const page = () => {
     return (
         <MaxWidthWrapper>
-            <div className="py-4 mx-auto my-6 md:grid md:grid-flow-col flex max-w-full border rounded-lg h-[calc(100vh-8rem)] md:auto-cols-fr">
+            <div className="py-2 mx-auto my-2 md:grid md:grid-flow-col flex max-w-full border rounded-lg h-[calc(100vh-5rem)] md:auto-cols-fr">
                 <div className="col-span-1 hidden md:block">buttons</div>
-                <div className="col-span-3 hidden md:block">user</div>
-                <div className="md:col-span-5 w-full">
+                <div className="col-span-2 hidden md:block">user</div>
+                <div className="md:col-span-6 w-full grid grid-flow-row">
                     <Chat />
                 </div>
-                <div className="col-span-3 hidden md:block"></div>
+                <div className="col-span-2 hidden md:block"></div>
             </div>
         </MaxWidthWrapper>
     );

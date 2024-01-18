@@ -83,10 +83,15 @@ const Chat = () => {
                 <div className="grid w-full py-4 h-full overflow-hidden text-sm">
                     <div className="grid grid-rows-10 grid-cols-1 rounded-3xl bg-cover bg-[url('/chat-bg-light.png')] dark:bg-[url('/chat-bg-dark.png')] bg-scroll px-2">
                         <div className="row-span-9 overflow-hidden relative justify-center mb-2 px-1">
-                            <div className="overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-full absolute">
-                                <MessageBox />
-                                <MessageBox />
-                                <MessageBox />
+                            <div className="overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-full absolute w-full flex flex-col">
+                                <MessageBox sendBy="self" firstMsg={true}/>
+                                <MessageBox sendBy="self" firstMsg={false}/>
+                                <MessageBox sendBy="self" firstMsg={false}/>
+                                <MessageBox sendBy="other" firstMsg={true}/>
+                                <MessageBox sendBy="self" firstMsg={true}/>
+                                <MessageBox sendBy="other" firstMsg={true}/>
+                                <MessageBox sendBy="other" firstMsg={false}/>
+                                <MessageBox sendBy="self" firstMsg={true}/>
                             </div>
                         </div>
 

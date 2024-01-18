@@ -1,11 +1,79 @@
-"use client"
+'use client';
 
-const MessageBox = () => {
-  return (
-    <div className="max-w-[65%] dark:bg-blue-900 bg-blue-400 mt-2 rounded-ss-none rounded-3xl p-2">
-        orem, ipsum dolor sit amet consectetur adipisicing elit. Molestias aliquid veritatis dolor numquam quas, odit eveniet modi in est neque eius, saepe reprehenderit aperiam vel sunt praesentium quam maxime iusto veniam mollitia ipsa nihil, quisquam omnis? Debitis, optio. Laudantium ea harum, tenetur rem dolor et recusandae veritatis accusantium autem nesciunt.
-    </div>
-  )
-}
+import Image from 'next/image';
 
-export default MessageBox
+const MessageBox = ({
+    sendBy,
+    firstMsg,
+}: {
+    sendBy: string;
+    firstMsg: boolean;
+}) => {
+    if (sendBy === 'self') {
+        return (
+            <div className="max-w-[65%] flex items-start my-1 ms-auto">
+                <div className="mx-2 justify-start flex flex-col">
+                    <div
+                        className={`rounded-3xl p-2 dark:bg-blue-900 bg-blue-300 border ${
+                            firstMsg ? ' rounded-tr-none' : ''
+                        }`}
+                    >
+                        <p className="text-justify">
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Vero rem cum, sunt temporibus possimus beatae
+                            quas a dolores magnam perferendis?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className="max-w-[65%] flex items-start my-1 me-auto">
+                <div className="h-full items-start flex">
+                    {firstMsg ? (
+                        <Image
+                            src={'/group-icon.png'}
+                            width={90}
+                            height={90}
+                            alt="pfpImg"
+                            quality={100}
+                            loading="lazy"
+                            className="rounded-full border"
+                        />
+                    ) : (
+                        <Image
+                            src={'/group-icon.png'}
+                            width={90}
+                            height={90}
+                            alt="pfpImg"
+                            quality={100}
+                            loading="lazy"
+                            className="rounded-full border opacity-0"
+                        />
+                    )}
+                </div>
+                <div className="mx-2 justify-start flex flex-col">
+                    <div
+                        className={`rounded-3xl py-1 px-2 dark:bg-neutral-800 bg-neutral-100 border ${
+                            firstMsg ? ' rounded-ss-none' : ''
+                        }`}
+                    >
+                        {firstMsg ? (
+                            <div className="text-green-600">
+                                <h1>Name..</h1>
+                            </div>
+                        ) : null}
+                        <p className="text-justify">
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Vero rem cum, sunt temporibus possimus beatae
+                            quas a dolores magnam perferendis?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+};
+
+export default MessageBox;

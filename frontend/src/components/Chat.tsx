@@ -2,8 +2,10 @@
 import Image from 'next/image';
 import MessageBox from './MessageBox';
 import { SendHorizontalIcon } from 'lucide-react';
+import { useState } from 'react';
 
 const Chat = () => {
+    const [inputText, setInputText] = useState<string>('');
     const handleInviteClick = (): void => {
         navigator.clipboard.writeText('pathname');
     };
@@ -12,8 +14,8 @@ const Chat = () => {
         <div className="px-2 h-full">
             <div className="flex flex-col h-full">
                 {/* Header Row */}
-                <div className="flex w-full pb-1 cursor-default">
-                    <div className="flex">
+                <div className="flex w-full py-2 cursor-default bg-blue-300 dark:bg-blue-900 -z-50 rounded-xl">
+                    <div className="flex px-2">
                         <div className="h-full items-center flex">
                             <Image
                                 src={'/group-icon.png'}
@@ -34,7 +36,7 @@ const Chat = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-row ms-auto items-center">
+                    <div className="flex flex-row ms-auto items-center px-2">
                         <div className="items-center flex">
                             <div className="left-3 relative flex flex-nowrap">
                                 <h1
@@ -84,14 +86,14 @@ const Chat = () => {
                     <div className="grid grid-rows-10 grid-cols-1 rounded-3xl bg-cover bg-[url('/chat-bg-light.png')] dark:bg-[url('/chat-bg-dark.png')] bg-scroll px-2">
                         <div className="row-span-9 overflow-hidden relative justify-center mb-2 px-1">
                             <div className="overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] h-full absolute w-full flex flex-col">
-                                <MessageBox sendBy="self" firstMsg={true}/>
-                                <MessageBox sendBy="self" firstMsg={false}/>
-                                <MessageBox sendBy="self" firstMsg={false}/>
-                                <MessageBox sendBy="other" firstMsg={true}/>
-                                <MessageBox sendBy="self" firstMsg={true}/>
-                                <MessageBox sendBy="other" firstMsg={true}/>
-                                <MessageBox sendBy="other" firstMsg={false}/>
-                                <MessageBox sendBy="self" firstMsg={true}/>
+                                <MessageBox sendBy="self" firstMsg={true} />
+                                <MessageBox sendBy="self" firstMsg={false} />
+                                <MessageBox sendBy="self" firstMsg={false} />
+                                <MessageBox sendBy="other" firstMsg={true} />
+                                <MessageBox sendBy="self" firstMsg={true} />
+                                <MessageBox sendBy="other" firstMsg={true} />
+                                <MessageBox sendBy="other" firstMsg={false} />
+                                <MessageBox sendBy="self" firstMsg={true} />
                             </div>
                         </div>
 
@@ -100,11 +102,14 @@ const Chat = () => {
                                 <textarea
                                     className="dark:bg-neutral-800 bg-neutral-100 border appearance-none rounded-3xl py-2 px-4 dark:text-white leading-tight focus:outline-none w-full h-full text-wrap overflow-x-hidden overflow-y-scroll scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                                     rows={1}
-                                    value="msg.."
+                                    onChange={(e) => {
+                                        setInputText(e.target.value);
+                                    }}
+                                    value={inputText}
                                 />
                                 <button
                                     type="submit"
-                                    className="justify-end text-blue-700 hover:scale-110"
+                                    className="justify-end text-blue-300 dark:text-blue-900 hover:scale-110 font-extrabold"
                                 >
                                     <SendHorizontalIcon size={32} />
                                 </button>

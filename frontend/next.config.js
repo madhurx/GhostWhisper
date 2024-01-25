@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+require('dotenv').config();
+
+const nextConfig = {
+    env: {
+        SOCKET_ENDPOINT: process.env.SOCKET_ENDPOINT,
+    },
+    reactStrictMode: false,
+};
 
 module.exports = nextConfig;

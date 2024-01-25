@@ -5,9 +5,11 @@ import Image from 'next/image';
 const MessageBox = ({
     sendBy,
     firstMsg,
+    message,
 }: {
     sendBy: string;
     firstMsg: boolean;
+    message: string;
 }) => {
     if (sendBy === 'self') {
         return (
@@ -18,24 +20,20 @@ const MessageBox = ({
                             firstMsg ? ' rounded-tr-none' : ''
                         }`}
                     >
-                        <p className="text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Vero rem cum, sunt temporibus possimus beatae
-                            quas a dolores magnam perferendis?
-                        </p>
+                        <p className="text-justify">{message}</p>
                     </div>
                 </div>
             </div>
         );
-    } else {
+    } else if (sendBy === 'other') {
         return (
             <div className="max-w-[65%] flex items-start my-1 me-auto">
                 <div className="h-full items-start flex">
                     {firstMsg ? (
                         <Image
                             src={'/group-icon.png'}
-                            width={90}
-                            height={90}
+                            width={40}
+                            height={40}
                             alt="pfpImg"
                             quality={100}
                             loading="lazy"
@@ -64,11 +62,7 @@ const MessageBox = ({
                                 <h1>Name..</h1>
                             </div>
                         ) : null}
-                        <p className="text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Vero rem cum, sunt temporibus possimus beatae
-                            quas a dolores magnam perferendis?
-                        </p>
+                        <p className="text-justify">{message}</p>
                     </div>
                 </div>
             </div>

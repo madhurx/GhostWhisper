@@ -67,6 +67,18 @@ const MessageBox = ({
                 </div>
             </div>
         );
+    } else if (sendBy === 'system') {
+        return (
+            <div className="max-w-[65%] flex items-center my-1 mx-auto">
+                <div className="mx-2 justify-center flex flex-col">
+                    <div
+                        className={`rounded-md p-2 dark:bg-neutral-800 bg-neutral-100 border py-px`}
+                    >
+                        <p className="text-justify">{message}</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 };
 

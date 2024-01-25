@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
 	console.log("user connected");
 	console.log("socket-id", socket.id);
 	socket.emit("welcome", `welcome to chat`);
-	socket.broadcast.emit("welcome", ` ${socket.id} entered to chat`);
+	socket.broadcast.emit("welcome", ` ${socket.id} entered chat.`);
 
 	socket.on("message", ({ message, room, userId }) => {
 		console.log({ message, room, userId });

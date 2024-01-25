@@ -2,8 +2,10 @@
 import Image from 'next/image';
 import MessageBox from './MessageBox';
 import { SendHorizontalIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
+
+const SOCKET_ENDPOINT = process.env.SOCKET_ENDPOINT || '';
 
 interface TypeMessage {
     message: string;
@@ -12,7 +14,15 @@ interface TypeMessage {
 }
 
 const Chat = () => {
-    
+    const socket = useMemo(
+        () =>
+            io(SOCKET_ENDPOINT, {
+                transports: ['websocket', 'polling', 'flashsocket'],
+                withCredentials: true,
+            }),
+        [],
+    );
+
     const [inputText, setInputText] = useState<string>('');
     const [receivedMsg, setReceivedMsg] = useState<string>('');
     const [allMessages, setAllMessages] = useState<TypeMessage[]>([]);
@@ -23,9 +33,6 @@ const Chat = () => {
         navigator.clipboard.writeText('pathname');
     };
 
-    const SOCKET_ENDPOINT = process.env.SOCKET_ENDPOINT || '';
-    const [socket, setSocket] = useState<any>(null);
-
     const handleSendMsg = (e: any) => {
         console.log(inputText);
         socket.emit('message', {
@@ -33,36 +40,36 @@ const Chat = () => {
             room: roomName,
             userId: socket.id,
         });
+        setAllMessages((data) => [
+            ...data,
+            { message: inputText, sendBy: 'self' },
+        ]);
     };
 
     useEffect(() => {
-        const socket = io(SOCKET_ENDPOINT, {
-            transports: ['websocket', 'polling', 'flashsocket'],
-        });
-        setSocket(socket);
-
-        socket.on('welcome', (s) => {
-            console.log(s);
+        socket.on('welcome', (welcomeMsg) => {
+            setAllMessages((data) => [
+                ...data,
+                { message: welcomeMsg, sendBy: 'system' },
+            ]);
         });
 
         socket.on('receive-message', (data) => {
             const { message, userId } = data;
-            const sendByUser = userId === socket.id ? "self":"other"
-            setSendBy(userId === socket.id ? 'self' : 'other');
-            console.log("sendbyid" , userId)
-            console.log("sendby" , sendBy)
+            const sendByUser = userId === socket.id ? 'self' : 'other';
+            setSendBy(sendByUser);
             setReceivedMsg(message);
-            setAllMessages((data) => [...data, { message, sendBy:sendByUser }]);
-            console.log(message, userId);
-            // console.log(data.message);
+            setAllMessages((data) => [
+                ...data,
+                { message, sendBy: sendByUser },
+            ]);
         });
 
         socket.emit('join-room', roomName);
-        console.log("sendby" , sendBy)
-
+        console.log('sendby', sendBy);
 
         return () => {
-            socket.close();
+            socket.disconnect();
         };
     }, []);
 
@@ -150,13 +157,6 @@ const Chat = () => {
                                         key={String(id)}
                                     />
                                 ))}
-                                {/* <MessageBox sendBy="self" firstMsg={false} />
-                                <MessageBox sendBy="self" firstMsg={false} />
-                                <MessageBox sendBy="other" firstMsg={true} />
-                                <MessageBox sendBy="self" firstMsg={true} />
-                                <MessageBox sendBy="other" firstMsg={true} />
-                                <MessageBox sendBy="other" firstMsg={false} />
-                                <MessageBox sendBy="self" firstMsg={true} /> */}
                             </div>
                         </div>
 

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import MessageBox from './MessageBox';
 import { SendHorizontalIcon } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const SOCKET_ENDPOINT = process.env.SOCKET_ENDPOINT || '';
@@ -33,7 +33,15 @@ const Chat = () => {
         navigator.clipboard.writeText('pathname');
     };
 
-    const handleSendMsg = (e: any) => {
+    const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+    const handleSendMsg = (
+        e:
+            | React.KeyboardEvent<HTMLTextAreaElement>
+            | React.MouseEvent<HTMLButtonElement>,
+    ) => {
+        e.preventDefault();
+        e.stopPropagation();
         console.log(inputText);
         socket.emit('message', {
             message: inputText,
@@ -44,6 +52,8 @@ const Chat = () => {
             ...data,
             { message: inputText, sendBy: 'self' },
         ]);
+        setInputText('');
+        scrollToBottom();
     };
 
     useEffect(() => {
@@ -72,6 +82,19 @@ const Chat = () => {
             socket.disconnect();
         };
     }, []);
+
+    const scrollToBottom = () => {
+        // window.scrollTo({ behavior: 'smooth',top: messagesEndRef.current.offsetTop });
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })) {
+            console.log('if blocl');
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+        console.log('AAAa');
+    }, [allMessages]);
 
     return (
         <div className="px-2 h-full">
@@ -159,6 +182,9 @@ const Chat = () => {
                                 ))}
                             </div>
                         </div>
+                        <div ref={messagesEndRef} id="msgEnd">
+                            asda
+                        </div>
 
                         <div className="row-span-1 w-full rounded-3xl px-1 mt-auto mb-px">
                             <div className="w-full flex">
@@ -169,7 +195,15 @@ const Chat = () => {
                                         setInputText(e.target.value);
                                     }}
                                     value={inputText}
+                                    onKeyDown={(e) => {
+                                        e.key === 'Enter'
+                                            ? inputText.trim() !== ''
+                                                ? handleSendMsg(e)
+                                                : null
+                                            : null;
+                                    }}
                                 />
+
                                 <button
                                     type="submit"
                                     className="justify-end text-blue-300 dark:text-blue-900 hover:scale-110 font-extrabold"

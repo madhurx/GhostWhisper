@@ -1,11 +1,16 @@
+'use client';
+
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const page = () => {
+    const [userName, setUserName] = useState<string>('');
+
     return (
         <MaxWidthWrapper>
             <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl max-h-screen">
@@ -35,6 +40,17 @@ const page = () => {
                                         placeholder="Enter display name"
                                         className="text-center"
                                         maxLength={20}
+                                        value={userName}
+                                        onChange={(e) => {
+                                            setUserName(e.target.value);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            e.key === 'Enter'
+                                                ? userName.trim() !== ''
+                                                    ? null
+                                                    : null
+                                                : null;
+                                        }}
                                     />
                                     <Link href={'/anonChat/go'} className="">
                                         <Button

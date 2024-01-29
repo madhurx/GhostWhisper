@@ -1,4 +1,4 @@
-import Chat from '@/components/Chat';
+import Chat from '../../../components/Chat';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 
 const page = () => {
@@ -9,7 +9,7 @@ const page = () => {
                 <div className="col-span-1 hidden md:block">buttons</div>
                 <div className="col-span-2 hidden md:block">user</div>
                 <div className="md:col-span-6 w-full grid grid-flow-row">
-                    <Chat/>
+                    <Chat />
                 </div>
                 <div className="col-span-2 hidden md:block">
                     <button>ABC</button>

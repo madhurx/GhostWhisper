@@ -13,6 +13,11 @@ interface TypeMessage {
     // Add other properties if needed
 }
 
+interface MessageData {
+    message: string;
+    userId: string;
+}
+
 const Chat = () => {
     const socket = useMemo(
         () =>
@@ -29,11 +34,11 @@ const Chat = () => {
     const [roomName, setRoomName] = useState<string>('ABC');
     const [sendBy, setSendBy] = useState<string>();
 
+    const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
     const handleInviteClick = (): void => {
         navigator.clipboard.writeText('pathname');
     };
-
-    const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
     const handleSendMsg = (
         e:
@@ -42,7 +47,6 @@ const Chat = () => {
     ) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(inputText);
         socket.emit('message', {
             message: inputText,
             room: roomName,
@@ -53,18 +57,10 @@ const Chat = () => {
             { message: inputText, sendBy: 'self' },
         ]);
         setInputText('');
-        scrollToBottom();
     };
 
     useEffect(() => {
-        socket.on('welcome', (welcomeMsg) => {
-            setAllMessages((data) => [
-                ...data,
-                { message: welcomeMsg, sendBy: 'system' },
-            ]);
-        });
-
-        socket.on('receive-message', (data) => {
+        const handleReceiveMessage = (data: MessageData) => {
             const { message, userId } = data;
             const sendByUser = userId === socket.id ? 'self' : 'other';
             setSendBy(sendByUser);
@@ -73,27 +69,41 @@ const Chat = () => {
                 ...data,
                 { message, sendBy: sendByUser },
             ]);
+        };
+
+        // socket.on('receive-message', (data) => {
+        //     const { message, userId } = data;
+        //     const sendByUser = userId === socket.id ? 'self' : 'other';
+        //     setSendBy(sendByUser);
+        //     setReceivedMsg(message);
+        //     setAllMessages((data) => [
+        //         ...data,
+        //         { message, sendBy: sendByUser },
+        //     ]);
+        // });
+
+        socket.on('welcome', (welcomeMsg) => {
+            setAllMessages((data) => [
+                ...data,
+                { message: welcomeMsg, sendBy: 'system' },
+            ]);
         });
+        socket.on('receive-message', handleReceiveMessage);
 
         socket.emit('join-room', roomName);
-        console.log('sendby', sendBy);
 
         return () => {
+            socket.off('receive-message', handleReceiveMessage);
             socket.disconnect();
         };
     }, []);
 
-    const scrollToBottom = () => {
-        // window.scrollTo({ behavior: 'smooth',top: messagesEndRef.current.offsetTop });
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        if (messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })) {
-            console.log('if blocl');
-        }
-    };
-
     useEffect(() => {
-        scrollToBottom();
-        console.log('AAAa');
+        messagesEndRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+            inline: 'nearest',
+        });
     }, [allMessages]);
 
     return (
@@ -180,10 +190,8 @@ const Chat = () => {
                                         key={String(id)}
                                     />
                                 ))}
+                                <div ref={messagesEndRef} id="msgEnd" />
                             </div>
-                        </div>
-                        <div ref={messagesEndRef} id="msgEnd">
-                            asda
                         </div>
 
                         <div className="row-span-1 w-full rounded-3xl px-1 mt-auto mb-px">

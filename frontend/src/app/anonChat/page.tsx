@@ -22,8 +22,10 @@ const page = () => {
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ): void => {
         e.preventDefault();
+        const uniqueName =
+            userName + '-' + Math.floor(97 + Math.random() * 17).toString();
         const encryptName = encodeURIComponent(
-            AES.encrypt(userName, CRYPTO_KEY).toString(),
+            AES.encrypt(uniqueName, CRYPTO_KEY).toString(),
         );
 
         const encryptURL = encodeURIComponent(
@@ -72,7 +74,10 @@ const page = () => {
                                         maxLength={20}
                                         value={userName}
                                         onChange={(e) => {
-                                            setUserName(e.target.value);
+                                            const userInput = e.target.value;
+                                            if (/^[a-zA-Z]*$/.test(userInput)) {
+                                                setUserName(userInput);
+                                            }
                                         }}
                                         onKeyDown={(e) => {
                                             e.key === 'Enter'

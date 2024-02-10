@@ -38,6 +38,7 @@ const MessageBox = ({
             </div>
         );
     } else if (sendBy) {
+        const userName = sendBy.split('-')[0];
         return (
             <div className="max-w-[65%] flex items-start my-1 me-auto">
                 <div className="h-full items-start flex">
@@ -71,7 +72,7 @@ const MessageBox = ({
                     >
                         {firstMsg ? (
                             <div className="text-green-600">
-                                <h1>{sendBy}</h1>
+                                <h1>{userName}</h1>
                             </div>
                         ) : null}
                         <p className="text-justify">{message}</p>

@@ -21,15 +21,18 @@ io.on("connection", (socket) => {
 	console.log("socket-id", socket.id);
 
 	socket.on("message", ({ message, room, userId }) => {
-        const data ={ message, userId }
-		io.to(room).emit("receiveMessage",data );
+		const data = { message, userId };
+		io.to(room).emit("receiveMessage", data);
 	});
 
 	socket.on("join-room", ({ roomName, userName }) => {
 		socket.join(roomName);
 		users[socket.id] = userName;
 		socket.emit("welcome", `welcome to chat`);
-		socket.broadcast.emit("welcome", ` ${users[socket.id]} entered chat.`);
+		socket.broadcast.to(roomName).emit(
+			"welcome",
+			` ${users[socket.id].split("-")[0]} entered chat.`,
+		);
 	});
 
 	socket.on("disconnect", () => {

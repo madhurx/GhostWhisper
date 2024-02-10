@@ -61,7 +61,6 @@ const Chat = ({ chatId, userName }: { chatId: string; userName: string }) => {
     useEffect(() => {
         const handleReceiveMessage = (data: MessageData) => {
             const { message, userId } = data;
-            console.log(data);
             const sendByUser = userId === userName ? 'self' : userId;
             setSendBy(sendByUser);
             setReceivedMsg(message);
@@ -81,7 +80,6 @@ const Chat = ({ chatId, userName }: { chatId: string; userName: string }) => {
         socket.on('receiveMessage', (data) => {
             handleReceiveMessage(data);
         });
-        console.log(roomName, 'roomName');
 
         socket.emit('join-room', { roomName, userName });
 

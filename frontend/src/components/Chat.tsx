@@ -1,4 +1,5 @@
 'use client';
+
 import Image from 'next/image';
 import MessageBox from './MessageBox';
 import { SendHorizontalIcon } from 'lucide-react';
@@ -10,7 +11,6 @@ const SOCKET_ENDPOINT = process.env.SOCKET_ENDPOINT || '';
 interface TypeMessage {
     message: string;
     sendBy: string;
-    // Add other properties if needed
 }
 
 interface MessageData {
@@ -18,7 +18,7 @@ interface MessageData {
     userId: string;
 }
 
-const Chat = () => {
+const Chat = ({ chatId, userName }: { chatId: string; userName: string }) => {
     const socket = useMemo(
         () =>
             io(SOCKET_ENDPOINT, {
@@ -31,13 +31,15 @@ const Chat = () => {
     const [inputText, setInputText] = useState<string>('');
     const [receivedMsg, setReceivedMsg] = useState<string>('');
     const [allMessages, setAllMessages] = useState<TypeMessage[]>([]);
-    const [roomName, setRoomName] = useState<string>('ABC');
+    const [roomName, setRoomName] = useState<string>(chatId.toString());
     const [sendBy, setSendBy] = useState<string>();
 
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-    const handleInviteClick = (): void => {
-        navigator.clipboard.writeText('pathname');
+    const handleInviteClick = () => {
+        const origin = window.location.origin;
+        const inviteURL = origin + '/anonChat/go?chatId=' + chatId;
+        navigator.clipboard.writeText(inviteURL);
     };
 
     const handleSendMsg = (
@@ -50,19 +52,17 @@ const Chat = () => {
         socket.emit('message', {
             message: inputText,
             room: roomName,
-            userId: socket.id,
+            userId: userName,
         });
-        setAllMessages((data) => [
-            ...data,
-            { message: inputText, sendBy: 'self' },
-        ]);
+
         setInputText('');
     };
 
     useEffect(() => {
         const handleReceiveMessage = (data: MessageData) => {
             const { message, userId } = data;
-            const sendByUser = userId === socket.id ? 'self' : 'other';
+            console.log(data);
+            const sendByUser = userId === userName ? 'self' : userId;
             setSendBy(sendByUser);
             setReceivedMsg(message);
             setAllMessages((data) => [
@@ -71,29 +71,22 @@ const Chat = () => {
             ]);
         };
 
-        // socket.on('receive-message', (data) => {
-        //     const { message, userId } = data;
-        //     const sendByUser = userId === socket.id ? 'self' : 'other';
-        //     setSendBy(sendByUser);
-        //     setReceivedMsg(message);
-        //     setAllMessages((data) => [
-        //         ...data,
-        //         { message, sendBy: sendByUser },
-        //     ]);
-        // });
-
         socket.on('welcome', (welcomeMsg) => {
             setAllMessages((data) => [
                 ...data,
                 { message: welcomeMsg, sendBy: 'system' },
             ]);
         });
-        socket.on('receive-message', handleReceiveMessage);
 
-        socket.emit('join-room', roomName);
+        socket.on('receiveMessage', (data) => {
+            handleReceiveMessage(data);
+        });
+        console.log(roomName, 'roomName');
+
+        socket.emit('join-room', { roomName, userName });
 
         return () => {
-            socket.off('receive-message', handleReceiveMessage);
+            socket.off('receiveMessage', handleReceiveMessage);
             socket.disconnect();
         };
     }, []);
@@ -110,7 +103,7 @@ const Chat = () => {
         <div className="px-2 h-full">
             <div className="flex flex-col h-full">
                 {/* Header Row */}
-                <div className="flex w-full py-1 cursor-default -z-50 rounded-xl">
+                <div className="flex w-full py-1 cursor-default z-50 rounded-xl">
                     <div className="flex px-2">
                         <div className="h-full items-center flex">
                             <Image
@@ -134,17 +127,19 @@ const Chat = () => {
                     </div>
                     <div className="flex flex-row ms-auto items-center px-2">
                         <div className="items-center flex">
-                            <div className="left-3 relative flex flex-nowrap">
-                                <h1
-                                    className="text-sm mx-1 cursor-pointer"
-                                    onClick={handleInviteClick}
-                                >
+                            <div
+                                className="left-3 relative flex flex-nowrap hover:cursor-pointer"
+                                onClick={() => {
+                                    return handleInviteClick();
+                                }}
+                            >
+                                <button className="text-sm mx-1">
                                     + Invite
                                     <span className="hidden md:inline">
                                         {' '}
                                         Ghosts
                                     </span>
-                                </h1>
+                                </button>
                             </div>
 
                             <div className="-z-20 left-4 relative border border-neutral-500 rounded-full">

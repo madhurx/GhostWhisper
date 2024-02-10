@@ -7,28 +7,38 @@ import { Label } from '@/components/ui/label';
 import AES from 'crypto-js/aes';
 import encBase64 from 'crypto-js/enc-base64';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 const CRYPTO_KEY = process.env.CRYPTO_KEY || '';
 const page = () => {
     const [userName, setUserName] = useState<string>('');
+    const router = useRouter();
+
+    const searchParams = useSearchParams();
+    const chatId = searchParams.get('chatId') || null;
 
     const handleEnterChat = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ): void => {
         e.preventDefault();
-        const encryptName = AES.encrypt(
-            userName,
-            CRYPTO_KEY,
-        ).ciphertext.toString(encBase64);
+        const encryptName = encodeURIComponent(
+            AES.encrypt(userName, CRYPTO_KEY).toString(),
+        );
 
-        const encryptURL = AES.encrypt(
-            Math.floor(100000 + Math.random() * 900000).toString(),
-            CRYPTO_KEY,
-        ).ciphertext.toString(encBase64);
+        const encryptURL = encodeURIComponent(
+            AES.encrypt(
+                Math.floor(46461234 + Math.random() * 66165417).toString(),
+                CRYPTO_KEY,
+            ).ciphertext.toString(encBase64),
+        );
 
-        console.log(encryptName);
+        if (chatId !== null) {
+            router.push(`anonChat/go?chatId=${chatId}&userId=${encryptName}`);
+            return;
+        }
+
+        router.push(`anonChat/go?chatId=${encryptURL}&userId=${encryptName}`);
     };
 
     return (

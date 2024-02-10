@@ -25,7 +25,19 @@ const MessageBox = ({
                 </div>
             </div>
         );
-    } else if (sendBy === 'other') {
+    } else if (sendBy === 'system') {
+        return (
+            <div className="max-w-[65%] flex items-center my-1 mx-auto">
+                <div className="mx-2 justify-center flex flex-col">
+                    <div
+                        className={`rounded-md p-2 dark:bg-neutral-800 bg-neutral-100 border py-px`}
+                    >
+                        <p className="text-justify">{message}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (sendBy) {
         return (
             <div className="max-w-[65%] flex items-start my-1 me-auto">
                 <div className="h-full items-start flex">
@@ -59,21 +71,9 @@ const MessageBox = ({
                     >
                         {firstMsg ? (
                             <div className="text-green-600">
-                                <h1>Name..</h1>
+                                <h1>{sendBy}</h1>
                             </div>
                         ) : null}
-                        <p className="text-justify">{message}</p>
-                    </div>
-                </div>
-            </div>
-        );
-    } else if (sendBy === 'system') {
-        return (
-            <div className="max-w-[65%] flex items-center my-1 mx-auto">
-                <div className="mx-2 justify-center flex flex-col">
-                    <div
-                        className={`rounded-md p-2 dark:bg-neutral-800 bg-neutral-100 border py-px`}
-                    >
                         <p className="text-justify">{message}</p>
                     </div>
                 </div>

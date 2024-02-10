@@ -15,20 +15,21 @@ const io = new Server(server, {
 	},
 });
 
+const users = <any>[{}];
 io.on("connection", (socket) => {
 	console.log("user connected");
 	console.log("socket-id", socket.id);
-	socket.emit("welcome", `welcome to chat`);
-	socket.broadcast.emit("welcome", ` ${socket.id} entered chat.`);
 
 	socket.on("message", ({ message, room, userId }) => {
-		console.log({ message, room, userId });
-		console.log("room", room);
-		socket.to(room).emit("receive-message", { message, userId });
+        const data ={ message, userId }
+		io.to(room).emit("receiveMessage",data );
 	});
 
-	socket.on("join-room", (room) => {
-		socket.join(room);
+	socket.on("join-room", ({ roomName, userName }) => {
+		socket.join(roomName);
+		users[socket.id] = userName;
+		socket.emit("welcome", `welcome to chat`);
+		socket.broadcast.emit("welcome", ` ${users[socket.id]} entered chat.`);
 	});
 
 	socket.on("disconnect", () => {

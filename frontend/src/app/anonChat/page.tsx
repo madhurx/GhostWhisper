@@ -48,16 +48,13 @@ const page = () => {
             <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl max-h-screen">
                 <div className="flex flex-col lg:flex-row w-full h-full items-center justify-center">
                     <div className="w-3/4 md:w-1/2 items-center justify-center">
-                        <div className="relative h-full drop-shadow-2xl flex flex-col">
+                        <div className="relative h-96 w-96 drop-shadow-2xl">
                             <Image
                                 src={'/anonChatIndex.png'}
-                                width={100}
-                                height={100}
+                                fill
                                 alt="anonChatIndexImg"
-                                quality={100}
-                                objectFit="contain"
-                                loading="lazy"
-                                layout="responsive"
+                                priority={true}
+                                sizes="(max-width: 768px) 100vw"
                             />
                         </div>
                     </div>

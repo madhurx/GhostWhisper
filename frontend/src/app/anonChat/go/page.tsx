@@ -5,7 +5,6 @@ import Chat from '../../../components/Chat';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import AES from 'crypto-js/aes';
 import Utf8 from 'crypto-js/enc-utf8';
-import CryptoJS from 'crypto-js';
 
 const CRYPTO_KEY = process.env.CRYPTO_KEY || '';
 
